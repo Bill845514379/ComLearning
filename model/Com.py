@@ -37,7 +37,7 @@ class Com(nn.Module):
         dis2 = torch.pairwise_distance(input_x, neg, p=1)
         dis.append(dis2)
 
-        dis = torch.tensor(dis).to(device)
+        dis = Variable(torch.tensor(dis).to(device), requires_grad=True)
         return dis
 
 
