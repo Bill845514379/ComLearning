@@ -112,6 +112,7 @@ for test_id in range(len(seeds)):
             neg = train_neg_X[get_random_sample_ids(len(train_neg_X), 1)]
             pos, neg = Variable(torch.tensor(pos)).long(), Variable(torch.tensor(neg)).long()
             pos, neg = pos.to(device), neg.to(device)
+            pos, neg = pos.unsqueeze(dim=0), neg.unsqueeze(dim=0)
 
             output = net(pos, neg, batch_x)
 
@@ -153,6 +154,7 @@ for test_id in range(len(seeds)):
                 neg = train_neg_X[get_random_sample_ids(len(train_neg_X), 1)]
                 pos, neg = Variable(torch.tensor(pos)).long(), Variable(torch.tensor(neg)).long()
                 pos, neg = pos.to(device), neg.to(device)
+                pos, neg = pos.unsqueeze(dim=0), neg.unsqueeze(dim=0)
 
                 with torch.no_grad():
                      output = net(pos, neg, batch_x)
