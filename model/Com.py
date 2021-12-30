@@ -17,15 +17,17 @@ class Com(nn.Module):
         self.roberta = RobertaModel.from_pretrained(path['roberta_path'])
 
     def forward(self, pos, neg, input_x):
-        mask1 = (input_x != 1).type(torch.long)
+        mask_x = (input_x != 1).type(torch.long)
+        mask_pos = (pos != 1).type(torch.long)
+        mask_neg = (neg != 1).type(torch.long)
 
-        input_x = self.roberta(input_x, attention_mask=mask1)
+        input_x = self.roberta(input_x, attention_mask=mask_x)
         input_x = input_x[0]
 
-        pos = self.roberta(pos, attention_mask=mask1)
+        pos = self.roberta(pos, attention_mask=mask_pos)
         pos = pos[0]
 
-        neg = self.roberta(neg, attention_mask=mask1)
+        neg = self.roberta(neg, attention_mask=mask_neg)
         neg = neg[0]
 
         dis = []
