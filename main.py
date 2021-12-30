@@ -158,8 +158,8 @@ for test_id in range(len(seeds)):
 
                 with torch.no_grad():
                     output = net(pos, neg, batch_x)
-                    
-                _, pred = torch.min(output)
+                print(output)
+                _, pred = torch.min(output, dim=0)
 
                 pred = pred.cpu().detach().numpy()
                 batch_y = batch_y.cpu().detach().numpy()
