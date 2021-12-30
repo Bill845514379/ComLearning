@@ -22,24 +22,21 @@ class Com(nn.Module):
         mask_neg = (neg != 1).type(torch.long)
 
         input_x = self.roberta(input_x, attention_mask=mask_x)
-        input_x = input_x[0]
+        input_x = input_x[0][:, 0, :]
 
         pos = self.roberta(pos, attention_mask=mask_pos)
-        pos = pos[0]
+        pos = pos[0][:, 0, :]
 
         neg = self.roberta(neg, attention_mask=mask_neg)
-        neg = neg[0]
+        neg = neg[0][:, 0, :]
 
         dis = []
 
         dis1 = torch.pairwise_distance(input_x, pos, p=1)
-        dis.append(dis1[0])
+        dis.append(dis1)
         dis2 = torch.pairwise_distance(input_x, neg, p=1)
-        dis.append(dis2[0])
-        
-        print(dis1)
-        print(dis2)
-        print(dis)
+        dis.append(dis2)
+
         dis = torch.tensor(dis).to(device)
         return dis
 
