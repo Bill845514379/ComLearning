@@ -108,7 +108,7 @@ for test_id in range(len(seeds)):
             net.train()
             batch_x, batch_y = Variable(batch_x).long(), Variable(batch_y).long()
             batch_x, batch_y = batch_x.to(device), batch_y.to(device)
-            pos = train_pos_y[get_random_sample_ids(len(train_pos_y), 1)]
+            pos = train_pos_X[get_random_sample_ids(len(train_pos_y), 1)]
             neg = train_neg_X[get_random_sample_ids(len(train_neg_X), 1)]
             pos, neg = Variable(pos).long(), Variable(neg).long()
             pos, neg = pos.to(device), neg.to(device)
@@ -149,7 +149,7 @@ for test_id in range(len(seeds)):
                 net.eval()
                 batch_x, batch_y = Variable(batch_x).long(), Variable(batch_y).long()
                 batch_x, batch_y = batch_x.to(device), batch_y.to(device)
-                pos = train_pos_y[get_random_sample_ids(len(train_pos_y), 1)]
+                pos = train_pos_X[get_random_sample_ids(len(train_pos_y), 1)]
                 neg = train_neg_X[get_random_sample_ids(len(train_neg_X), 1)]
                 pos, neg = Variable(pos).long(), Variable(neg).long()
                 pos, neg = pos.to(device), neg.to(device)
