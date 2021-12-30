@@ -117,7 +117,7 @@ for test_id in range(len(seeds)):
             output = net(pos, neg, batch_x)
 
             # criterion = F.mse_loss()
-            loss = F.mse_loss()(torch.exp(output - batch_y), 0)
+            loss = F.mse_loss(torch.exp(output - batch_y), 0)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(net.parameters(), 1.0)
             optimizer.step()  # 更新权重
