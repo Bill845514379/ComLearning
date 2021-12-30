@@ -33,9 +33,9 @@ class Com(nn.Module):
         dis = []
 
         dis1 = torch.pairwise_distance(input_x, pos, p=1)
-        dis.append(dis1)
+        dis.append(dis1[0])
         dis2 = torch.pairwise_distance(input_x, neg, p=1)
-        dis.append(dis2)
+        dis.append(dis2[0])
 
         dis = torch.tensor(dis).to(device)
         return dis
