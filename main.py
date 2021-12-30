@@ -117,7 +117,7 @@ for test_id in range(len(seeds)):
             output = net(pos, neg, batch_x)
 
             # criterion = F.mse_loss()
-            loss = F.mse_loss(torch.exp(output[0] - output[1]), torch.tensor([0]).to(device))
+            loss = F.mse_loss(torch.tensor([0]).to(device), torch.exp(output[0] - output[1]))
             loss.backward()
             torch.nn.utils.clip_grad_norm_(net.parameters(), 1.0)
             optimizer.step()  # 更新权重
