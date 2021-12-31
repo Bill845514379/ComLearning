@@ -16,7 +16,7 @@ class Com(nn.Module):
     def __init__(self):
         super(Com, self).__init__()
         self.roberta = RobertaModel.from_pretrained(path['roberta_path'])
-        self.dropout = hyper_roberta['dropout']
+        self.dropout = nn.Dropout(hyper_roberta['dropout'])
         self.dence = nn.Linear(2, hyper_roberta['word_dim'])
         self.classifier = nn.Linear(hyper_roberta['word_dim'], 2)
 
