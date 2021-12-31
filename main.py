@@ -116,8 +116,10 @@ for test_id in range(len(seeds)):
 
             output = net(pos, neg, batch_x)
 
-            loss_fn = torch.nn.MSELoss(reduce=True, size_average=True)
-            loss = loss_fn(output[0], torch.tensor([0.0]).to(device)) + loss_fn(output[1], torch.tensor([1.0]).to(device))
+            # loss_fn = torch.nn.MSELoss(reduce=True, size_average=True)
+            # loss = loss_fn(output[0], torch.tensor([0.0]).to(device)) + loss_fn(output[1], torch.tensor([100.0]).to(device))
+            criterion = nn.CrossEntropyLoss()
+            loss = criterion(output, batch_y)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(net.parameters(), 1.0)
             optimizer.step()  # 更新权重
@@ -159,8 +161,7 @@ for test_id in range(len(seeds)):
                 with torch.no_grad():
                     output = net(pos, neg, batch_x)
                 # print(output)
-                _, pred = torch.min(output, dim=0)
-                pred = pred.unsqueeze(dim=0)
+                _, pred = torch.max(output, dim=1)
                 pred = pred.cpu().detach().numpy()
                 batch_y = batch_y.cpu().detach().numpy()
 
