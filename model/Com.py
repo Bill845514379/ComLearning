@@ -2,6 +2,7 @@
 import torch
 import torch.nn as nn
 from pytorch_transformers import RobertaModel
+from pytorch_transformers.modeling_bert import BertLayerNorm, gelu
 from pytorch_transformers.modeling_bert import BertLayerNorm
 from config.cfg import cfg, path, hyper_roberta
 from torch.autograd import Variable
@@ -15,6 +16,9 @@ class Com(nn.Module):
     def __init__(self):
         super(Com, self).__init__()
         self.roberta = RobertaModel.from_pretrained(path['roberta_path'])
+        self.dropout = hyper_roberta['dropout']
+        self.dence = nn.Linear(2, hyper_roberta['word_dim'])
+        self.classifier = nn.Linear(hyper_roberta['word_dim'], 2)
 
     def forward(self, pos, neg, input_x):
         mask_x = (input_x != 1).type(torch.long)
@@ -38,6 +42,13 @@ class Com(nn.Module):
         dis.append(dis2)
 
         dis = Variable(torch.tensor(dis).to(device), requires_grad=True)
+        dis = dis.unsqueeze(dim=0)
+
+        dis = self.dence(dis)
+        dis = gelu(dis)
+        dis = self.dropout(dis)
+        dis = self.classifier(dis)
+
         return dis
 
 
