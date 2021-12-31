@@ -6,7 +6,7 @@ cfg = {
     'learning_rate': 1e-5,
     'epoch': 20,
     'K': 16,
-    'Kt': 2000,
+    'Kt': 100,
     'template': 'It was <mask>.',
     'answer': ['terrible', 'great'],
     'device': 'cuda',
