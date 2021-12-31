@@ -17,7 +17,7 @@ class Com(nn.Module):
         super(Com, self).__init__()
         self.roberta = RobertaModel.from_pretrained(path['roberta_path'])
         self.dropout = nn.Dropout(hyper_roberta['dropout'])
-        self.dence = nn.Linear(2, hyper_roberta['word_dim'])
+        # self.dence = nn.Linear(2, hyper_roberta['word_dim'])
         self.classifier = nn.Linear(hyper_roberta['word_dim'], 2)
 
     def forward(self, pos, neg, input_x):
@@ -34,18 +34,10 @@ class Com(nn.Module):
         neg = self.roberta(neg, attention_mask=mask_neg)
         neg = neg[0][:, 0, :]
 
-        dis = []
+        dis = torch.cat([input_x,pos,neg], dim=0)
 
-        dis1 = torch.pairwise_distance(input_x, pos, p=1)
-        dis.append(dis1)
-        dis2 = torch.pairwise_distance(input_x, neg, p=1)
-        dis.append(dis2)
-
-        dis = Variable(torch.tensor(dis).to(device), requires_grad=True)
-        dis = dis.unsqueeze(dim=0)
-
-        dis = self.dence(dis)
-        dis = gelu(dis)
+        # dis = self.dence(dis)
+        # dis = gelu(dis)
         dis = self.dropout(dis)
         dis = self.classifier(dis)
 
