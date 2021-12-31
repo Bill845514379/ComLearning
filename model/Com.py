@@ -18,7 +18,7 @@ class Com(nn.Module):
         self.roberta = RobertaModel.from_pretrained(path['roberta_path'])
         self.dropout = nn.Dropout(hyper_roberta['dropout'])
         # self.dence = nn.Linear(2, hyper_roberta['word_dim'])
-        self.classifier = nn.Linear(hyper_roberta['word_dim'], 2)
+        self.classifier = nn.Linear(hyper_roberta['word_dim'] * 3, 2)
 
     def forward(self, pos, neg, input_x):
         mask_x = (input_x != 1).type(torch.long)
@@ -34,7 +34,7 @@ class Com(nn.Module):
         neg = self.roberta(neg, attention_mask=mask_neg)
         neg = neg[0][:, 0, :]
 
-        dis = torch.cat([input_x,pos,neg], dim=0)
+        dis = torch.cat([input_x,pos,neg], dim=1)
 
         # dis = self.dence(dis)
         # dis = gelu(dis)
